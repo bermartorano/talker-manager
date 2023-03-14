@@ -1,13 +1,14 @@
 const express = require('express');
 // const { readTalkersFile } = require('../utils/readAndWrite');
+const tokenGenerator = require('../utils/randomToken');
+
 const router = express.Router();
 
 router.post('/login', (req, res) => {
   // const { body: { email, password } } = req;
-  const randomNumber = Math.floor(Math.random() * (10 ** 16)) + 1;
-  const randomToken = JSON.stringify(randomNumber);
+  const token = tokenGenerator(16);
 
-  res.status(200).json({ token: randomToken });
+  res.status(200).json({ token });
 });
 
 module.exports = router;
