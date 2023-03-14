@@ -1,11 +1,23 @@
 const express = require('express');
-// Apenas para o commit;
+const routers = require('./routers');
+require('express-async-errors');
 
 const app = express();
 app.use(express.json());
 
 const HTTP_OK_STATUS = 200;
 const PORT = process.env.PORT || '3001';
+
+// app.get('/talker', (_req, res) => {
+//   res.status(200).json({ massage: 'ok' });
+// });
+
+app.use(routers);
+
+app.use((error, _req, res, _next) => {
+  console.error(error.stack);
+  res.status(500).json({ message: 'Erro na aplicação' });
+});
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
