@@ -8,14 +8,8 @@ const readTalkersFile = async () => {
   return talkers;
 };
 
-const writeTalkerFile = async (talker) => {
-  const talkers = await readTalkersFile();
-  const newId = talkers.length + 1;
-  const newTalkers = [...talkers, { ...talker, id: newId }];
-  const newTalkersString = JSON.stringify(newTalkers);
-  console.log('Novo vetor: ', newTalkers);
-
-  await fs.writeFile(talkersFilePath, newTalkersString);
+const writeTalkerFile = async (newTalkers) => {
+  await fs.writeFile(talkersFilePath, newTalkers);
 };
 
 module.exports = {

@@ -35,9 +35,14 @@ router.post('/talker',
   rateValidation,
   async (req, res) => {
     const { body } = req;
-    console.log('Body: ', body);
-    await writeTalkerFile(body);
-    return res.status(201).json(body);
+    const talkers = await readTalkersFile();
+    const newId = talkers.length + 1;
+    const talker = { ...body, id: newId };
+    const newTalkers = [...talkers, talker];
+    const newTalkersString = JSON.stringify(newTalkers, null, 2);
+
+    await writeTalkerFile(newTalkersString);
+    return res.status(201).json(talker);
   });
 
 module.exports = router;
