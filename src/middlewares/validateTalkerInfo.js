@@ -17,7 +17,18 @@ const nameValidation = (req, res, next) => {
   return next();
 };
 
+const ageValidation = (req, res, next) => {
+  const { body: { age } } = req;
+  if (!age) return res.status(400).json({ message: 'O campo "age" é obrigatório' });
+  if (typeof age !== 'number' || !Number.isInteger(age) || age < 18) {
+    return res.status(400).json({
+      message: 'O campo "age" deve ser um número inteiro igual ou maior que 18' });
+  }
+  next();
+};
+
 module.exports = {
   tokenValidation,
   nameValidation,
+  ageValidation,
 };
