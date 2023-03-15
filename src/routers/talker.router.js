@@ -1,5 +1,5 @@
 const express = require('express');
-const { readTalkersFile } = require('../utils/readAndWrite');
+const { readTalkersFile, writeTalkerFile } = require('../utils/readAndWrite');
 const {
     tokenValidation,
     nameValidation,
@@ -33,8 +33,10 @@ router.post('/talker',
   talkValidation,
   watchedAtValidation,
   rateValidation,
-  (req, res) => {
+  async (req, res) => {
     const { body } = req;
+    console.log('Body: ', body);
+    await writeTalkerFile(body);
     return res.status(201).json(body);
   });
 
