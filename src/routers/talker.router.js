@@ -1,6 +1,6 @@
 const express = require('express');
 const { readTalkersFile } = require('../utils/readAndWrite');
-const { tokenValidation } = require('../middlewares/validateTalkerInfo');
+const { tokenValidation, nameValidation } = require('../middlewares/validateTalkerInfo');
 
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.get('/talker/:id', async (req, res) => {
   return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
-router.post('/talker', tokenValidation, (req, res) => {
+router.post('/talker', tokenValidation, nameValidation, (req, res) => {
   const { body } = req;
   return res.status(201).json(body);
 });

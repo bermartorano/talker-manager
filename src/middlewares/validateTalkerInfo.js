@@ -5,9 +5,17 @@ const tokenValidation = (req, res, next) => {
   const tokenType = typeof authorization === 'string';
   const tokenLength = authorization.length === 16;
   if (!tokenType || !tokenLength) return res.status(401).json({ message: 'Token inválido' });
-  next();
+  return next();
+};
+
+const nameValidation = (req, res, next) => {
+  const { body: { name } } = req;
+  if (!name) return res.status(400).json('O campo "name" é obrigatório');
+  if (name.length < 3) res.status(400).json('O "name" deve ter pelo menos 3 caracteres');
+  return next();
 };
 
 module.exports = {
   tokenValidation,
+  nameValidation,
 };
