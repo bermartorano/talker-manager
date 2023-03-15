@@ -39,7 +39,6 @@ const watchedAtValidation = (req, res, next) => {
   const { body: { talk: { watchedAt } } } = req;
   if (!watchedAt) return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
   const dateCheck = moment(watchedAt, 'DD/MM/YYYY', true).isValid();
-  console.log('data: ', watchedAt, ' é válida: ', dateCheck);
   if (!dateCheck) {
     return (res.status(400).json({
         message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
@@ -50,8 +49,14 @@ const watchedAtValidation = (req, res, next) => {
 
 const rateValidation = (req, res, next) => {
   const { body: { talk: { rate } } } = req;
-  console.log('rateValidation ativada: ', rate);
-  if (!rate) return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
+  if (!(rate + 100)) return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
+
+  const itIsInteger = Number.isInteger(rate);
+  const rightInterval = (rate < 6) && (rate > 0);
+  if (!itIsInteger || !rightInterval) {
+    return (
+      res.status(400).json({ message: 'O campo "rate" deve ser um número inteiro entre 1 e 5' }));
+  }
   return next();
 };
 
