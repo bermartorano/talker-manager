@@ -4,6 +4,9 @@ const {
     tokenValidation,
     nameValidation,
     ageValidation,
+    talkValidation,
+    watchedAtValidation,
+    rateValidation,
       } = require('../middlewares/validateTalkerInfo');
 
 const router = express.Router();
@@ -23,9 +26,16 @@ router.get('/talker/:id', async (req, res) => {
   return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
-router.post('/talker', tokenValidation, nameValidation, ageValidation, (req, res) => {
-  const { body } = req;
-  return res.status(201).json(body);
-});
+router.post('/talker',
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  watchedAtValidation,
+  rateValidation,
+  (req, res) => {
+    const { body } = req;
+    return res.status(201).json(body);
+  });
 
 module.exports = router;

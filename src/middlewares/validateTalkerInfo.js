@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const tokenValidation = (req, res, next) => {
   const { headers: { authorization } } = req;
   if (!authorization) return res.status(401).json({ message: 'Token não encontrado' });
@@ -27,8 +29,37 @@ const ageValidation = (req, res, next) => {
   next();
 };
 
+const talkValidation = (req, res, next) => {
+  const { body: { talk } } = req;
+  if (!talk) return res.status(400).json({ message: 'O campo "talk" é obrigatório' });
+  return next();
+};
+
+const watchedAtValidation = (req, res, next) => {
+  const { body: { talk: { watchedAt } } } = req;
+  if (!watchedAt) return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
+  const dateCheck = moment(watchedAt, 'DD/MM/YYYY', true).isValid();
+  console.log('data: ', watchedAt, ' é válida: ', dateCheck);
+  if (!dateCheck) {
+    return (res.status(400).json({
+        message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
+      }));
+  }
+  return next();
+};
+
+const rateValidation = (req, res, next) => {
+  const { body: { talk: { rate } } } = req;
+  console.log('rateValidation ativada: ', rate);
+  if (!rate) return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
+  return next();
+};
+
 module.exports = {
   tokenValidation,
   nameValidation,
   ageValidation,
+  talkValidation,
+  watchedAtValidation,
+  rateValidation,
 };
