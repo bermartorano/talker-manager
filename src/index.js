@@ -8,10 +8,6 @@ app.use(express.json());
 const HTTP_OK_STATUS = 200;
 const PORT = process.env.PORT || '3001';
 
-// app.get('/talker', (_req, res) => {
-//   res.status(200).json({ massage: 'ok' });
-// });
-
 app.use(routers);
 
 app.use((error, _req, res, _next) => {

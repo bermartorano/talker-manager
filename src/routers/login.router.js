@@ -1,13 +1,12 @@
 const express = require('express');
-// const { readTalkersFile } = require('../utils/readAndWrite');
+const { fieldsExistence, fieldsValidation } = require('../middlewares/validateLogin');
 const tokenGenerator = require('../utils/randomToken');
+// const { readTalkersFile } = require('../utils/readAndWrite');
 
 const router = express.Router();
 
-router.post('/login', (req, res) => {
-  // const { body: { email, password } } = req;
+router.post('/login', fieldsExistence, fieldsValidation, (_req, res) => {
   const token = tokenGenerator(16);
-
   res.status(200).json({ token });
 });
 
