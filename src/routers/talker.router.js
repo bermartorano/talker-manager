@@ -52,17 +52,20 @@ router.put('/talker/:id',
   talkValidation,
   watchedAtValidation,
   rateValidation,
-  async (_req, res) => {
-    // const { body, params: { id } } = req;
-    // const talkers = await readTalkersFile();
-    // const talkersCopy = [...talkers];
-    // const talkerToUpdate = talkersCopy.find((tlk) => tlk.id === id);
-    // const talkerUpdated = { ...talkerToUpdate, ...body };
-    // const talkerToUpdateIndex = talkerToUpdate.indexOf(talkerToUpdate);
-    // talkersCopy[talkerToUpdateIndex] = talkerUpdated;
+  async (req, res) => {
+    const { body, params: { id } } = req;
+    const talkers = await readTalkersFile();
+    const talkersCopy = [...talkers];
+    const talkerToUpdate = talkersCopy.find((tlk) => tlk.id === +id);
+    if (!talkerToUpdate) {
+      return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    }
+    const talkerUpdated = { ...talkerToUpdate, ...body };
+    const talkerToUpdateIndex = talkersCopy.indexOf(talkerToUpdate);
+    talkersCopy[talkerToUpdateIndex] = talkerUpdated;
     
-    // await writeTalkerFile(talkersCopy);
-     res.status(201).json({ message: 'oi' });
+    await writeTalkerFile(JSON.stringify(talkersCopy));
+    res.status(200).json(talkerUpdated);
   });
 
 module.exports = router;
