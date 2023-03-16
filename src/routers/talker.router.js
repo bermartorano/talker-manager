@@ -65,7 +65,18 @@ router.put('/talker/:id',
     talkersCopy[talkerToUpdateIndex] = talkerUpdated;
     
     await writeTalkerFile(JSON.stringify(talkersCopy));
-    res.status(200).json(talkerUpdated);
+    return res.status(200).json(talkerUpdated);
+  });
+
+router.delete('/talker/:id',
+  tokenValidation,
+  async (req, res) => {
+    const { params: { id } } = req;
+    const talkers = await readTalkersFile();
+    const talkersFiltered = talkers.filter((tlk) => tlk.id !== +id);
+
+    await writeTalkerFile(JSON.stringify(talkersFiltered));
+    return res.status(204).json();
   });
 
 module.exports = router;
